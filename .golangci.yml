@@ -1,0 +1,80 @@
+version: "2"
+run:
+  go: "1.24.4"
+  tests: true
+  allow-parallel-runners: true
+linters:
+  default: all
+  disable:
+    - musttag
+    - canonicalheader
+    - wsl
+    - contextcheck
+    - cyclop
+    - depguard
+    - dupl
+    - err113
+    - exhaustruct
+    - funlen
+    - gochecknoglobals
+    - gocognit
+    - godot
+    - interfacebloat
+    - ireturn
+    - lll
+    - revive
+    - rowserrcheck
+    - tagliatelle
+    - testpackage
+    - varnamelen
+    - wrapcheck
+  settings:
+    errcheck:
+      exclude-functions:
+        - (*os.File).WriteString
+    exhaustive:
+      default-signifies-exhaustive: true
+    gocyclo:
+      min-complexity: 40
+    gosec:
+      excludes:
+        - G101
+    mnd:
+      checks:
+        - argument
+        - case
+        - condition
+        - operation
+        - return
+        - assign
+    nestif:
+      min-complexity: 10
+    staticcheck:
+      checks:
+        - -SA1029
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+issues:
+  max-issues-per-linter: 75
+  max-same-issues: 10
+formatters:
+  enable:
+    - gci
+    - gofmt
+    - gofumpt
+    - goimports
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
