@@ -7,4 +7,6 @@ const (
 	defaultRectHeight   = 300
 	defaultJSONHeight   = 250
 	defaultMinRow       = 10
+	apilayerName        = "Apilayer"
+	twinwordName        = "Twinword"
 )

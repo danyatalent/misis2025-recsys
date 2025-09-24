@@ -16,13 +16,15 @@ import (
 //
 // создание окна с результатом
 func makeResultView(ctx context.Context, g *GUI, text string) fyne.CanvasObject {
-	// Заглушки для результатов
+	// создаем результирующие контейнеры
 	apilayerBox := newResultBox("Apilayer")
 	twinwordBox := newResultBox("Twinword")
 
 	// запускаем асинхронно
 	go func() {
 		resultsCh := g.uc.AnalyzeStream(ctx, text)
+
+		// чтение из канала гарантирует, что основной поток не завершится
 		for res := range resultsCh {
 			var box *ResultBox
 
@@ -45,6 +47,7 @@ func makeResultView(ctx context.Context, g *GUI, text string) fyne.CanvasObject 
 					return
 				}
 
+				// обновляем экран после получения результата
 				updateResultBox(box, res.Result)
 			})
 		}
@@ -87,7 +90,7 @@ func newResultBox(title string) *ResultBox {
 	)
 
 	// NewMax для того чтобы контейнеры занимали весь предоставленный объем
-	box := container.NewMax(rect, textBox)
+	box := container.NewStack(rect, textBox)
 
 	return &ResultBox{
 		Container:   box,
@@ -102,6 +105,7 @@ func newResultBox(title string) *ResultBox {
 //
 // функция для обновления результирующих контейнеров
 func updateResultBox(box *ResultBox, result entity.SentimentResult) {
+	// обновляем цвет
 	switch result.GetType() {
 	case "positive":
 		box.Rect.FillColor = color.NRGBA{R: 100, G: 200, B: 100, A: 255}
@@ -115,9 +119,9 @@ func updateResultBox(box *ResultBox, result entity.SentimentResult) {
 
 	box.Rect.Refresh()
 
-	// Обновляем текст
+	// обновляем текст
 	box.ResultLabel.SetText("Result: " + result.GetType() + "\nTime: " + result.GetTime().String())
 
-	// Обновляем JSON
+	// обновляем JSON
 	box.JSONView.SetText(result.JSONString())
 }

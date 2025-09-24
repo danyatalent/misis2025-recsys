@@ -5,6 +5,8 @@ import (
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/dialog"
+	"fyne.io/fyne/v2/storage"
 	"fyne.io/fyne/v2/widget"
 )
 
@@ -30,15 +32,29 @@ func makeMainView(ctx context.Context, g *GUI) fyne.CanvasObject {
 		g.window.SetContent(makeResultView(ctx, g, text))
 	})
 
+	csvBtn := widget.NewButton("Использовать CSV", func() {
+		fd := dialog.NewFileOpen(
+			func(reader fyne.URIReadCloser, err error) {
+				if err != nil || reader == nil {
+					return
+				}
+
+				g.window.SetContent(makeCSVResultView(ctx, g, reader.URI().Path()))
+			}, g.window)
+		fd.SetFilter(storage.NewExtensionFileFilter([]string{".csv"}))
+		fd.Show()
+	})
+
 	// Вертикальный бокс с полем и кнопкой
 	content := container.NewVBox(
 		inputScroll,
 		analyzeBtn,
+		csvBtn,
 	)
 
 	// Центрируем контент
 	centered := container.NewCenter(content)
 
 	// Чтобы занимало всё окно
-	return container.NewMax(centered)
+	return container.NewStack(centered)
 }

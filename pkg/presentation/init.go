@@ -28,7 +28,3 @@ func (g *GUI) Run(ctx context.Context, cancel context.CancelFunc) {
 	g.window.SetContent(makeMainView(ctx, g)) // стартовый экран
 	g.window.ShowAndRun()
 }
-
-func (g *GUI) Window() fyne.Window {
-	return g.window
-}
