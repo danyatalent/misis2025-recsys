@@ -1,4 +1,4 @@
-module github.com/danyatalent/misis2025-recsys
+module github.com/danyatalent/misis2025-recsys/lab01
 
 go 1.24.6
 

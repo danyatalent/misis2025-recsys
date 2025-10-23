@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/danyatalent/misis2025-recsys/pkg/usecase/entity"
+	"github.com/danyatalent/misis2025-recsys/lab01/pkg/usecase/entity"
 )
 
 const (

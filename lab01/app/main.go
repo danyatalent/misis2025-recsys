@@ -6,10 +6,10 @@ import (
 	"log/slog"
 	"os"
 
-	"github.com/danyatalent/misis2025-recsys/pkg/adapters/apilayer"
-	"github.com/danyatalent/misis2025-recsys/pkg/adapters/twinword"
-	"github.com/danyatalent/misis2025-recsys/pkg/presentation"
-	"github.com/danyatalent/misis2025-recsys/pkg/usecase/analysis"
+	"github.com/danyatalent/misis2025-recsys/lab01/pkg/adapters/apilayer"
+	"github.com/danyatalent/misis2025-recsys/lab01/pkg/adapters/twinword"
+	"github.com/danyatalent/misis2025-recsys/lab01/pkg/presentation"
+	"github.com/danyatalent/misis2025-recsys/lab01/pkg/usecase/analysis"
 	"github.com/golang-cz/devslog"
 )
 

@@ -6,47 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/danyatalent/misis2025-recsys/pkg/usecase/entity"
+	"github.com/danyatalent/misis2025-recsys/lab01/pkg/usecase/entity"
 )
-
-// Analyze
-//
-// Главная функция, которая производит запрос к разным API и получает унифицированный результат
-func (u *UseCase) Analyze(ctx context.Context, textToAnalyze string) ([]entity.SentimentResult, error) {
-	results := make([]entity.SentimentResult, len(u.apis))
-	errs := make(chan error, len(u.apis))
-
-	var wg sync.WaitGroup
-	wg.Add(len(u.apis))
-
-	for i, api := range u.apis {
-		go func(i int, api API) {
-			defer wg.Done()
-
-			start := time.Now()
-
-			resp, err := api.SentimentAnalysis(ctx, textToAnalyze)
-			if err != nil {
-				errs <- err
-
-				return
-			}
-
-			resp.SetTime(time.Since(start))
-			results[i] = resp
-		}(i, api)
-	}
-
-	wg.Wait()
-	close(errs)
-
-	if len(errs) > 0 {
-		// вернём первую ошибку (или можно собрать все)
-		return nil, <-errs
-	}
-
-	return results, nil
-}
 
 // AnalyzeStream
 //
@@ -59,6 +20,8 @@ func (u *UseCase) AnalyzeStream(ctx context.Context, text string) <-chan entity.
 	wg.Add(len(u.apis))
 
 	for _, api := range u.apis {
+		// асинхронно вызываются API
+		// гарантируется корректное завершение с помощью WaitGroup
 		go func(api API) {
 			defer wg.Done()
 
